@@ -5,8 +5,18 @@ use cli_csv::{process_csv, Cli, Command};
 fn main() -> Result<()> {
     let cli = Cli::parse();
     match cli.command {
-        Command::Csv(csv) => {
-            process_csv(&csv.input, &csv.output)?;
+        Command::Csv(opts) => {
+            let mut format = opts.format;
+            let output = if let Some(output) = opts.output {
+                // next_back() 直接从迭代器末尾取元素，更高效
+                // last() 会消费整个迭代器再返回最后一个元素
+                let suffix = output.split('.').next_back().unwrap();
+                format = suffix.parse().unwrap();
+                output
+            } else {
+                format!("output.{}", format)
+            };
+            process_csv(&opts.input, &output, format)?;
         }
     }
     Ok(())
