@@ -1,8 +1,6 @@
-use std::fs;
-
-use serde::{Deserialize, Serialize};
-use csv;
 use anyhow::Result;
+use serde::{Deserialize, Serialize};
+use std::fs;
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "PascalCase")]
@@ -36,8 +34,7 @@ fn write_json(students: &Vec<Student>, path: &str) -> Result<()> {
     Ok(())
 }
 
-
 pub fn process_csv(input: &str, output: &str) -> Result<()> {
-            write_json(&read_csv(input), &output)?;
-            Ok(())
+    write_json(&read_csv(input), output)?;
+    Ok(())
 }

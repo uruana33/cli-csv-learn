@@ -1,6 +1,6 @@
-use clap::{Parser};
-use std::path::{Path};
 use anyhow::Result;
+use clap::Parser;
+use std::path::Path;
 
 #[derive(Parser, Debug)]
 pub struct CsvOpts {
@@ -17,10 +17,10 @@ pub struct CsvOpts {
     pub header: bool,
 }
 
-fn check_file_exists(path: &str) -> Result<String, String> {
+fn check_file_exists(path: &str) -> Result<String, &'static str> {
     if Path::new(path).exists() {
         Ok(path.to_string())
     } else {
-        Err(format!("File {} does not exist", path))
+        Err("File {} does not exist")
     }
 }
