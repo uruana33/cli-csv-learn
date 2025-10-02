@@ -1,0 +1,16 @@
+[package]
+name="cli-csv"
+version="0.1.0"
+edition="2021"
+license="MIT"
+description="A Rust project cli-csv"
+authors=["uruana <uruana33@163.com>"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.100"
+clap = { version = "4.5.48", features = ["derive"] }
+csv = "1.3.1"
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.145"
