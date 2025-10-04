@@ -1,6 +1,6 @@
 use anyhow::Result;
 use clap::Parser;
-use cli_csv::{generate_password, process_csv, Cli, Command};
+use cli_csv::{decode, encode, generate_password, process_csv, Base64Subcommand, Cli, Command};
 
 fn main() -> Result<()> {
     let cli = Cli::parse();
@@ -28,6 +28,18 @@ fn main() -> Result<()> {
             )?;
             println!("{}", password);
         }
+        // 在标准输入中输入内容，按回车，在按ctrl+d结束
+        Command::Base64(opts) => match opts {
+            Base64Subcommand::Encode(opts) => {
+                println!("encode input: {:?}", opts.input);
+                println!("b64 encode: {:?}", encode(&opts.input, opts.format)?);
+            }
+            Base64Subcommand::Decode(opts) => {
+                println!("decode input: {:?}", opts.input);
+                let ret = decode(&opts.input, opts.format)?;
+                println!("b64 decode: {:?}", String::from_utf8(ret)?);
+            }
+        },
     }
     Ok(())
 }
