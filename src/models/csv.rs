@@ -1,27 +1,10 @@
+use crate::models::check_file_exists;
 use anyhow::Result;
-use clap::Parser;
+use clap::{arg, Parser};
 use std::{
     fmt::{self, Display},
-    path::Path,
     str::FromStr,
 };
-
-#[derive(Parser, Debug)]
-#[command(version, about, long_about = None)]
-pub struct Cli {
-    name: Option<String>,
-
-    #[command(subcommand)]
-    pub command: Command, // Command必须是enum类型
-}
-
-#[derive(Parser, Debug)]
-pub enum Command {
-    #[command(name = "csv", about = "CSV command")]
-    Csv(CsvOpts),
-    #[command(name = "gen-pw", about = "Generate password command")]
-    GenPassword(GenPasswordOpts),
-}
 
 #[derive(Parser, Debug)]
 pub struct CsvOpts {
@@ -46,36 +29,6 @@ pub enum OutputFormat {
     Json,
     Yaml,
     Toml,
-}
-
-#[derive(Parser, Debug, Clone)]
-pub struct GenPasswordOpts {
-    #[arg(long)]
-    pub length: u32,
-
-    #[arg(long, default_value_t = true)]
-    pub uppercase: bool,
-
-    #[arg(long, default_value_t = true)]
-    pub lowercase: bool,
-
-    #[arg(long, default_value_t = true)]
-    pub digits: bool,
-
-    #[arg(long, default_value_t = true)]
-    pub symbols: bool,
-}
-
-fn check_file_exists(path: &str) -> Result<String, &'static str> {
-    if Path::new(path).exists() {
-        Ok(path.to_string())
-    } else {
-        Err("File {} does not exist")
-    }
-}
-
-fn value_parser_output_format(value: &str) -> Result<OutputFormat, anyhow::Error> {
-    value.parse().map_err(|e: anyhow::Error| e)
 }
 
 impl From<OutputFormat> for &'static str {
@@ -109,4 +62,8 @@ impl Display for OutputFormat {
             OutputFormat::Toml => write!(f, "toml"),
         }
     }
+}
+
+fn value_parser_output_format(value: &str) -> Result<OutputFormat, anyhow::Error> {
+    value.parse().map_err(|e: anyhow::Error| e)
 }
