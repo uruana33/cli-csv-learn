@@ -1,19 +1,7 @@
 use crate::OutputFormat;
 use anyhow::Result;
-use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::fs;
-
-#[derive(Serialize, Deserialize, Debug)]
-#[serde(rename_all = "PascalCase")]
-pub struct Student {
-    #[serde(rename = "Name")]
-    pub name: String,
-    #[serde(rename = "Age")]
-    pub age: u8,
-    #[serde(rename = "Score")]
-    pub score: f32,
-}
 
 fn read_csv(path: &str) -> Vec<Value> {
     let mut result = csv::ReaderBuilder::new()

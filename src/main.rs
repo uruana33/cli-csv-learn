@@ -1,6 +1,6 @@
 use anyhow::Result;
 use clap::Parser;
-use cli_csv::{process_csv, Cli, Command};
+use cli_csv::{generate_password, process_csv, Cli, Command};
 
 fn main() -> Result<()> {
     let cli = Cli::parse();
@@ -17,6 +17,16 @@ fn main() -> Result<()> {
                 format!("output.{}", format)
             };
             process_csv(&opts.input, &output, format)?;
+        }
+        Command::GenPassword(opts) => {
+            let password = generate_password(
+                opts.length,
+                opts.uppercase,
+                opts.lowercase,
+                opts.digits,
+                opts.symbols,
+            )?;
+            println!("{}", password);
         }
     }
     Ok(())

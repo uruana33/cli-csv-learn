@@ -2,4 +2,4 @@ mod opts;
 pub use opts::{Cli, Command, OutputFormat};
 
 mod process;
-pub use process::process_csv;
+pub use process::{generate_password, process_csv};

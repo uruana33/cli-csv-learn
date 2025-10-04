@@ -19,6 +19,8 @@ pub struct Cli {
 pub enum Command {
     #[command(name = "csv", about = "CSV command")]
     Csv(CsvOpts),
+    #[command(name = "gen-pw", about = "Generate password command")]
+    GenPassword(GenPasswordOpts),
 }
 
 #[derive(Parser, Debug)]
@@ -44,6 +46,24 @@ pub enum OutputFormat {
     Json,
     Yaml,
     Toml,
+}
+
+#[derive(Parser, Debug, Clone)]
+pub struct GenPasswordOpts {
+    #[arg(long)]
+    pub length: u32,
+
+    #[arg(long, default_value_t = true)]
+    pub uppercase: bool,
+
+    #[arg(long, default_value_t = true)]
+    pub lowercase: bool,
+
+    #[arg(long, default_value_t = true)]
+    pub digits: bool,
+
+    #[arg(long, default_value_t = true)]
+    pub symbols: bool,
 }
 
 fn check_file_exists(path: &str) -> Result<String, &'static str> {
